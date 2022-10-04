@@ -8,7 +8,7 @@ OPENCV := -lopencv_core -lopencv_highgui -lopencv_imgcodecs
 SRC     := src
 INCLUDE := include
 
-all: clean main.exe
+all: clean release
 
 release: main.cpp $(SRC)/*.cpp
 	$(CXX) $(CXX_FLAGS) $(RELEASE_FLAGS) -I$(INCLUDE) $^ -o main.exe $(LIBRARIES) $(OPENCV) 
