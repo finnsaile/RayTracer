@@ -14,7 +14,7 @@ _This version of the ray tracer is not yet complete and is still a work in progr
 
 
 ## Dependencies
-The programm relies on the [_Eigen_](https://eigen.tuxfamily.org/index.php?title=Main_Page) library, [_OpenCV_](https://opencv.org/releases/) and the self written [_statusbar_](../../statusbar/) library. When installing _OpenCV_, the **opencv2** folder has to be extracted from the **opencv4** folder. Otherwise the include statement has to be changed (didn't work on my machine for some reason). The [_statusbar_](../../statusbar/) library can be compiled using the Makefile (description in the [README](../../statusbar/README.md)). The ray tracer itself can be compiled using the [Makefile](Makefile).
+The programm relies on the [_Eigen_](https://eigen.tuxfamily.org/index.php?title=Main_Page) library, [_OpenCV_](https://opencv.org/releases/) and the self written [_Statusbar_](https://github.com/finnsaile/Statusbar) library. When installing _OpenCV_, the **opencv2** folder has to be extracted from the **opencv4** folder. Otherwise the include statement has to be changed (didn't work on my machine for some reason). The ray tracer itself can be compiled using the [Makefile](Makefile).
 
 ## Usage
 The programm can be run with up to two parameters. The first one being the _output_ filename and the second one being the _input_ filename containing information about the different entities. These default to _output.png_ and _entities.txt_ respectfully.
