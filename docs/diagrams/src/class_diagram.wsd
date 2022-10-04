@@ -1,0 +1,186 @@
+@startuml Ray Tracer
+
+caption Ray Tracer
+
+
+skinparam Dpi 250
+skinparam RoundCorner 20
+skinparam class { 
+    BackgroundColor LightGray
+    BorderColor DarkRed
+}
+
+skinparam ClassAttributeIconSize 0
+
+interface Eigen::Vector3d << E, MediumPurple >>
+class RGB << A, MediumPurple >>
+class Camera << A, MediumPurple >>
+class Point << A, MediumPurple >>
+class Vec << A, MediumPurple >>
+
+
+class Scene << C, LightSalmon >> {
+    - ambientColor : unique_ptr<RGB>
+    - objects : vector<unique_ptr<PrimitiveObject>>
+    - lightSources : vector<lightSource>
+    - camera : unique_ptr<Camera>
+    - screen : unique_ptr<Screen>
+    ==
+    - RGB calculateColor(Point, Point)
+    - void readEntities(string) 
+    + Scene(string)
+    + void createPicture(string)
+}
+
+class SceneEntity << C, LightSalmon >> {
+    # location : Point
+    ==
+    + SceneEntity(Point)
+    + {abstract} virtual ~SceneEntity()
+    + Point getLoc() const
+    + void setLoc(Point)
+}
+
+class PrimitiveObject << C, LightSalmon >> {
+    # transMatrix : Matrix4d
+    # invTransmatrix : Matrix4d
+    # color : RGB
+    # alpha : double
+    # KMap : map<char, Vector3d>
+    ==
+    + PrimitiveObject(Point, Matrix4d, Matrix4d, RGB, double)
+    + {abstract} virtual pair<unique_ptr<Point>>, Vec> getInersection(Ray)
+    + RGB getColor()
+    + double getAlpha()
+    + Vector3d getK(const char)
+    + {abstract} virtual ~PrimitiveObject()
+}
+
+class Sphere << C, LightSalmon >> {
+    - radius : double
+    ==
+    + Sphere(Point, double, Matrix4d, Matrix4d, RGB, double, vector<Vector3d>)
+    + virtual pair<unique_ptr<Point>>, Vec> getInersection(Ray)
+    + virtual ~Sphere()
+}
+
+class HalfSpace << C, LightSalmon >> {
+    - distance : double
+    - normalVec : Vec
+    ==
+    + HalfSpace(Point, Vec, double, Matrix4d, Matrix4d, RGB, double, vector<Vector3d>)
+    + virtual pair<unique_ptr<Point>>, Vec> getInersection(Ray)
+    + virtual ~HalfSpace()
+}
+
+class Ray << C, LightSalmon >> {
+    - direction : Vec
+    - origin : Point
+    - scene : Scene* 
+    ==
+    + Ray(Vec, Point, Scene*)
+    + RGB getIntersectionColor()
+    + Vec getDir()
+    + Point getOri()
+    + Ray getTransformedRay(Matrix4d&)
+}
+
+class LightSource << C, LightSalmon >> {
+    - lightIntensity : RGB
+    ==
+    + LightSource(Point, RGB)
+    + RGB getColor()
+    + virtual ~LightSource()
+}
+
+class Screen << C, LightSalmon >> {
+    - v1 : Vec
+    - v2 : Vec
+    - normalVec : Vec
+    - width : double
+    - height : double
+    - xRes : size_t
+    - yRes : size_t
+    - size_t antiAliasing
+    ==
+    + Screen(Point, Vec, double, double, size_t, size_t, size_t)
+    + Point getPixelLocation(size_t, size_t)
+    + virtual ~Screen()
+}   
+
+class LightIntensity << C, CadetBlue >> {
+    # I : RGB
+    # K : Vector3d
+    # E : Vector3d
+    ==
+    + LightIntensity(RGB, Vector3d)
+    + LightIntensity& operator+=(LightIntensity&)
+    + Vector3d getIntensity()
+    + {abstract} virtual ~LightIntensity()
+}
+
+class AmbientComponent << C, CadetBlue >> {
+    + AmbientComponent(RGB, Vector3d)
+    + vietual AmbientComponent()
+}
+
+class DiffuseComponent << C, CadetBlue >> {
+    # N : Vec
+    # L : Vec
+    # dotProd : double
+    ==
+    + DiffuseComponent(RGB, Vector3d, Vec, Vec)
+    + double getDotProd() const
+    + virtual ~DiffuseComponent()
+}
+
+class SpecularComponent << C, CadetBlue >> {
+    # V : Vec
+    # R : Vec
+    # alpha : double
+    # dotPro : double
+    ==
+    + SpecularComponent(RGB, Vector3d, Vec, Vec, Vec, double)
+    + double getDotProd() const
+    + virtual ~SpecularComponent()
+}
+
+class RefComponent << C, CadetBlue >> {
+    + RefComponent(RGB, Vector3d)
+    + virtual ~RefComponent()
+}
+
+
+LightIntensity <|-- AmbientComponent : inherits
+LightIntensity <|-- DiffuseComponent : inherits
+LightIntensity <|-- SpecularComponent : inherits
+LightIntensity <|-- RefComponent : inherits
+
+Eigen::Vector3d <|-- Point : alias
+Eigen::Vector3d <|-- Vec : alias
+Eigen::Vector3d <|-- RGB : alias
+Eigen::Vector3d <|-- Camera : alias
+
+SceneEntity <|-- PrimitiveObject : inherits
+SceneEntity <|-- LightSource : inherits
+SceneEntity <|-- Screen : inherits
+
+PrimitiveObject <|-- Sphere : inherits
+PrimitiveObject <|-- HalfSpace : inherits
+
+Scene "1" *-- "1" RGB : contains
+Scene "1" *-- "*" LightSource : contains
+Scene "1" *-- "*" PrimitiveObject : contains
+Scene "1" *-- "1" Camera : contains
+Scene "1" *-- "1" Screen : contains
+
+PrimitiveObject "1" *-- "1" RGB : contains
+
+LightSource "1" *-- "1" RGB : contains
+
+SceneEntity "1" *-- "1" Point : contains
+
+Ray "1" *-- "1" Vec : contains
+Ray "1" *-- "1" Point : contains
+Ray "1" *-- "1" Scene : contains
+@enduml

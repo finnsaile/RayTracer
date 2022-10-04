@@ -1,0 +1,121 @@
+============================Cameras========================
+
+--Front Camera--
+camera
+pos: 0 7 -30
+
+screen
+pos: -8 9 -7
+N: 0 0 1
+w/h: 16 9
+xr/yr: 2560 1440
+aa: 0
+
+--Back Camera--
+-camera
+pos: 0 2.5 30
+
+-screen
+pos: 2.5 5 10
+N: 0 0 -1
+w/h: 5 5
+xr/yr: 500 500
+aa: 0
+
+--Side Camera Left--
+-camera
+pos: -30 7 0
+
+-screen
+pos: -7 9 -8
+N: 1 0 0
+w/h: 16 9
+xr/yr: 1280 720
+aa: 0
+
+--Side Camera Right--
+-camera
+pos: 30 2.5 0
+
+-screen
+pos: 10 5 2.5
+N: -1 0 0
+w/h: 5 5
+xr/yr: 700 700
+aa: 0
+
+========================================================================================
+
+light source
+pos: 0 30 -40
+rgb: 255 0 0
+
+light source
+pos: -21 -21 -40
+rgb: 0 255 0
+
+light source
+pos: 21 -21 -40
+rgb: 0 0 255
+
+light source
+pos: 0 30 40
+rgb: 255 0 0
+
+light source
+pos: -21 -21 40
+rgb: 0 255 0
+
+light source
+pos: 21 -21 40
+rgb: 0 0 255
+
+
+ambient light
+rgb: 128 179 255
+mrd: 10
+
+sphere
+pos: 0 3.5 0
+rgb: 255 255 255
+r: 1.75
+alpha: 100
+Ka: 0 0 0
+Kd: 1 1 1
+Ks: 0 0 0
+Kr: 0 0 0
+Kt: 1 1 1
+
+--WALLS--
+halfspace
+pos: 0 -50 0
+rgb: 128 179 255
+N: 0 1 0
+alpha: 1
+Ka: 0.7 0.7 0.7
+Kd: 0.1 0.1 0.1
+Ks: 0.5 0.5 0.5
+Kr: 0 0 0
+Kt: 1 1 1
+
+halfspace
+pos: -50 0 5
+rgb: 135 206 235
+N: 1 0 -1
+alpha: 1
+Ka: 0.6 0.6 0.6
+Kd: 0.1 0.1 0.1
+Ks: 0.1 0.1 0.1 
+Kr: 0.4 0.4 0.4
+Kt: 1 1 1
+
+halfspace
+pos: 50 -0 5
+rgb: 135 206 235
+N: -1 0 -1
+alpha: 1
+Ka: 0.6 0.6 0.6
+Kd: 0.1 0.1 0.1
+Ks: 0.1 0.1 0.1 
+Kr: 0.4 0.4 0.4
+Kt: 1 1 1
