@@ -35,4 +35,4 @@
 .DS_Store
 *.png
 !RayTraceExample.png
-!/project/implementation/Snowman.png
+!Snowman.png
