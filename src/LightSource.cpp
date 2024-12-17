@@ -1,6 +1,6 @@
 #include "LightSource.hpp"
 
-LightSource::LightSource(Point location, RGB lightIntensity) :
+LightSource::LightSource(Eigen::Vector3d location, RGB lightIntensity) :
 SceneEntity(location),
 lightIntensity(lightIntensity) {}
 

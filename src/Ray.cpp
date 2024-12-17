@@ -3,25 +3,25 @@
 
 #include <iostream>
 
-// used to move starting point towards ray direction to prevent colision with own object 
+// used to move starting Vector3d towards ray direction to prevent colision with own object 
 #define CORRECTION 0.000001
 
-Ray::Ray(Vec direction, Point origin, Scene* scene, const size_t recDepth) : 
+Ray::Ray(Vector3d direction, Vector3d origin, Scene* scene, const size_t recDepth) : 
 direction{direction.normalized()}, origin{origin}, scene{scene}, recursionDepth{recDepth + 1} {}
 
-Vec Ray::getDir() {
+Vector3d Ray::getDir() {
     return direction;
 }
 
-Point Ray::getOri() {
+Vector3d Ray::getOri() {
     return origin;
 }
 
 RGB Ray::getIntersectionColor() {
     PrimitiveObject* closestObj = nullptr;
-    unique_ptr<Point> minP = nullptr;
+    unique_ptr<Vector3d> minP = nullptr;
     double minD = std::numeric_limits<double>::max();
-    Vec NP;
+    Vector3d NP;
 
     for(auto& obj : scene->objects) {
         auto [P, N] = obj->getIntersection(this);
@@ -42,26 +42,26 @@ RGB Ray::getIntersectionColor() {
     using ULI = unique_ptr<LightIntensity>; 
     vector<ULI> EVec;
     
-    Vec V = origin - *minP;
+    Vector3d V = origin - *minP;
     // HalfSpace* halfSpaceObj = dynamic_cast<HalfSpace*>(closestObj);
     // if(halfSpaceObj != NULL)
     //     EVec.push_back(ULI(new AmbientComponent(halfSpaceObj->getColor(*minP), closestObj->getK('a'))));
     // else
     EVec.push_back(ULI(new AmbientComponent(closestObj->getColor(), closestObj->getK('a'))));
     if(recursionDepth <= scene->maxRecursionDepth) {
-        Vec I = (*minP - origin).normalized();
-        Vec& N = NP;
+        Vector3d I = (*minP - origin).normalized();
+        Vector3d& N = NP;
         double IN = I.dot(NP);
 
         if(closestObj->getK('r').norm() != 0) {
-            Vec R = I - 2*(IN*N);
+            Vector3d R = I - 2*(IN*N);
             Ray reflectedRay(R , *minP + (R.normalized() * CORRECTION), scene, recursionDepth);
             EVec.push_back(ULI(new RefComponent(reflectedRay.getIntersectionColor(), closestObj->getK('r'))));
         }
 
         // if(closestObj->getK('t').norm() != 0) {
         //     double n = scene->refractiveIndex / closestObj->getRefi();
-        //     Vec T = n * (I - (IN + sqrt(pow(n, 2) + pow(IN, 2) - 1)) * N);
+        //     Vector3d T = n * (I - (IN + sqrt(pow(n, 2) + pow(IN, 2) - 1)) * N);
         //     Ray refractedRay(T.normalized() , *minP + (T.normalized() * CORRECTION), scene, recursionDepth);
 
         //     EVec.push_back(ULI(new RefComponent(refractedRay.getIntersectionColor(), closestObj->getK('t'))));
@@ -71,14 +71,14 @@ RGB Ray::getIntersectionColor() {
 
     for(auto& light : scene->lightSources) {
         bool intersec = false;
-        Vector3d L = light.getLoc() - *minP;
+        Vector3d L = light.getPosition() - *minP;
         double lightDist = L.norm();
         for(auto& obj : scene->objects) {
             // if(obj.get() == closestObj)
             //     continue;
             
             Ray lightRay(L, *minP + (L.normalized() * CORRECTION), scene, 0);
-            unique_ptr<Point> P = obj->getIntersection(&lightRay).first; 
+            unique_ptr<Vector3d> P = obj->getIntersection(&lightRay).first; 
             if(P != nullptr && (*P - *minP).norm() < lightDist) {
                 intersec = true;
                 break;

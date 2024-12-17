@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <opencv2/highgui/highgui.hpp>
+#include <Eigen/Dense>
 #include <cmath>
 #include <vector>
 #include <fstream>
@@ -17,10 +18,9 @@ using std::string;
 using std::vector, std::array;
 using std::unique_ptr;
 using std::ifstream;
-using Eigen::Matrix4d;
 
-using Camera = Vector3d;
-using RGB = Vector3d;
+using Camera = Eigen::Vector3d;
+using RGB = Eigen::Vector3d;
 
 class PrimitiveObject;
 
@@ -42,7 +42,10 @@ private:
      * @param camLoc 
      * @return RGB 
      */
-    RGB calculateColor(Point pixelLocation, Point camLoc);
+    RGB calculateColor(Eigen::Vector3d pixelLocation, Eigen::Vector3d camLoc);
+
+public: 
+    Scene();
 
     /**
      * @brief Reads Scene entities from a given file 
@@ -51,8 +54,6 @@ private:
      * @param fileName 
      */
     void readEntities(string fileName);
-public: 
-    Scene(string fileName);
 
     /**
      * @brief Creates a picture of the scene and outputs it to the given file name
@@ -68,9 +69,9 @@ namespace vecTrans {
  * and its inverse given on the parameters in the file
  * 
  * @param file 
- * @return array<Matrix4d, 2> 
+ * @return array<Eigen::Matrix4d, 2> 
  */
-array<Matrix4d, 2> getTransformationMatrix(ifstream& file);
+array<Eigen::Matrix4d, 2> getTransformationMatrix(ifstream& file);
 
 /**
  * @brief Helperfunction that reads a line and 

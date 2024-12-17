@@ -1,13 +1,12 @@
 #include "SceneEntity.hpp"
 
-SceneEntity::SceneEntity(Point location) : location{location} {}
+using Eigen::Vector3d;
+
+SceneEntity::SceneEntity() {}
+SceneEntity::SceneEntity(Vector3d position) : position{position} {}
 
 SceneEntity::~SceneEntity() {}
 
-Point SceneEntity::getLoc() const {
-    return location;
-}
+Vector3d SceneEntity::getPosition() const { return position; }
 
-void SceneEntity::setLoc(Vector3d location) {
-    this->location = location;
-}
+void SceneEntity::setPosition(Vector3d position) { this->position = position; }

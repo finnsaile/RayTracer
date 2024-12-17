@@ -1,11 +1,11 @@
 #ifndef LIGHTINTENSITY_H
 #define LIGHTINTENSITY_H
 
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 
 using Eigen::Vector3d;
 using RGB = Vector3d;
-using Vec = Vector3d;
+using Vector3d = Vector3d;
 
 class LightIntensity {
 protected:
@@ -40,23 +40,23 @@ public:
 
 class DiffuseComponent : public LightIntensity {
 protected:
-    Vec N; //Normal Vector at point
-    Vec L; //Diredction Vector towards light
+    Vector3d N; //Normal Vector at Vector3d
+    Vector3d L; //Diredction Vector towards light
     double dotProd;
 public:
-    DiffuseComponent(RGB I, Vector3d K, Vec N, Vec L);
+    DiffuseComponent(RGB I, Vector3d K, Vector3d N, Vector3d L);
     double getDotProd() const;
     virtual ~DiffuseComponent();
 };
 
 class SpecularComponent : public LightIntensity {
 protected:
-    Vec V; //-Incoming Vector
-    Vec R; //Reflection Vector from Light source
+    Vector3d V; //-Incoming Vector
+    Vector3d R; //Reflection Vector from Light source
     double alpha; //shiny nt
     double dotProd;
 public:
-    SpecularComponent(RGB I, Vector3d K, Vec V, Vec N, Vec L, double alpha);
+    SpecularComponent(RGB I, Vector3d K, Vector3d V, Vector3d N, Vector3d L, double alpha);
     double getDotProd() const;
     virtual ~SpecularComponent();
 };

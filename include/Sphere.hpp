@@ -2,21 +2,20 @@
 #define SPHERE_H
 
 #include <algorithm>
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 
 #include "PrimitiveObject.hpp"
 #include "Ray.hpp"
 
-using Eigen::Matrix4d;
 using std::unique_ptr;
 
 class Sphere : public PrimitiveObject {
 private:
     double radius;
 public:
-    Sphere(Point location, double radius, Matrix4d transMatrix, Matrix4d transMatrixInv, RGB color, double alpha,
-    vector<Vector3d> KVec);
-    virtual pair<unique_ptr<Point>, Vector3d> getIntersection(Ray* ray);
+    Sphere(Eigen::Vector3d location, double radius, RGB color, double alpha,
+    vector<Eigen::Vector3d> KVec);
+    virtual pair<unique_ptr<Eigen::Vector3d>, Eigen::Vector3d> getIntersection(Ray* ray);
     virtual ~Sphere();
 };
 

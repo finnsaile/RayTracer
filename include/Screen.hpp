@@ -1,25 +1,27 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
+#include <nlohmann/json.hpp>
 #include "SceneEntity.hpp"
 
-using Vec = Vector3d;
-
 class Screen : public SceneEntity {
-friend class Scene;
-private:
-    Vec v1, v2;
-    const Vec normalVec;
-    const double width, height;
-    const size_t xRes, yRes;
-    const bool antiAliasing;
-public:
-    Screen(Point origin, Vec normalVec, double width, double height, 
-            size_t xRes, size_t yRes, bool antiAliasing);
-    Point getPixelLocation(size_t i, size_t j);
-    
+    friend class Scene;
+
+   private:
+    std::pair<Eigen::Vector3d, Eigen::Vector3d> screenVectors;
+    Eigen::Vector3d normalVec;
+    Eigen::Vector2d screenRatio;
+    Eigen::Vector2i resolution;
+    bool antiAliasing;
+
+   public:
+    Screen(Eigen::Vector3d position, Eigen::Vector3d normalVec,
+           Eigen::Vector2d screenRatio, Eigen::Vector2i resolution,
+           bool antiAliasing);
+
+    Eigen::Vector3d getPixelPosition(const Eigen::Vector2i);
+    Eigen::Vector3d getPixelPosition(const size_t i, const size_t j);
     virtual ~Screen();
 };
-
 
 #endif

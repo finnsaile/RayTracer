@@ -29,7 +29,7 @@ AmbientComponent::AmbientComponent(RGB I_, Vector3d K_) : LightIntensity(I_, K_)
 
 AmbientComponent::~AmbientComponent() {}
 
-DiffuseComponent::DiffuseComponent(RGB I_, Vector3d K_, Vec N_, Vec L_) : LightIntensity(I_, K_), N{N_.normalized()}, L{L_.normalized()} {
+DiffuseComponent::DiffuseComponent(RGB I_, Vector3d K_, Vector3d N_, Vector3d L_) : LightIntensity(I_, K_), N{N_.normalized()}, L{L_.normalized()} {
     dotProd = L.dot(N);
     E = K.cwiseProduct(I) * dotProd;
 }

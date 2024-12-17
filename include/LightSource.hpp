@@ -3,13 +3,13 @@
 
 #include "SceneEntity.hpp"
 
-using RGB = Vector3d;
+using RGB = Eigen::Vector3d;
 
 class LightSource : public SceneEntity {
 private:
     RGB lightIntensity;
 public:
-    LightSource(Point location, RGB lightIntensity);
+    LightSource(Eigen::Vector3d location, RGB lightIntensity);
     RGB getColor();
     virtual ~LightSource();
 };

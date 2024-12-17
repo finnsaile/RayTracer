@@ -1,8 +1,8 @@
 #include "PrimitiveObject.hpp"
 
-PrimitiveObject::PrimitiveObject(Point location, Matrix4d transMatrix, Matrix4d transMatrixInv, RGB color, double alpha,
+PrimitiveObject::PrimitiveObject(Vector3d location, RGB color, double alpha,
 vector<Vector3d> KVec) :
-SceneEntity(location), transMatrix{transMatrix}, invTransMatrix{transMatrixInv}, color{color}, alpha{alpha} {
+SceneEntity(location), color{color}, alpha{alpha} {
     char keys[] = {'a', 'd', 's', 'r', 't'};
     for(size_t i = 0; i < 5; i++) {
         KMap[keys[i]] = KVec[i];
