@@ -64,13 +64,13 @@ class Sphere << C, LightSalmon >> {
     + virtual ~Sphere()
 }
 
-class HalfSpace << C, LightSalmon >> {
+class Halfspace << C, LightSalmon >> {
     - distance : double
     - normalVec : Vec
     ==
-    + HalfSpace(Point, Vec, double, Matrix4d, Matrix4d, RGB, double, vector<Vector3d>)
+    + Halfspace(Point, Vec, double, Matrix4d, Matrix4d, RGB, double, vector<Vector3d>)
     + virtual pair<unique_ptr<Point>>, Vec> getInersection(Ray)
-    + virtual ~HalfSpace()
+    + virtual ~Halfspace()
 }
 
 class Ray << C, LightSalmon >> {
@@ -166,7 +166,7 @@ SceneEntity <|-- LightSource : inherits
 SceneEntity <|-- Screen : inherits
 
 PrimitiveObject <|-- Sphere : inherits
-PrimitiveObject <|-- HalfSpace : inherits
+PrimitiveObject <|-- Halfspace : inherits
 
 Scene "1" *-- "1" RGB : contains
 Scene "1" *-- "*" LightSource : contains

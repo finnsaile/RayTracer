@@ -20,8 +20,8 @@ find_package(Eigen3 REQUIRED)
 find_package(nlohmann_json 3.2.0 REQUIRED NO_MODULE)
 
 file(GLOB SOURCES
-    main.cpp
-    src/*.cpp
+    main.cc
+    src/*.cc
 )
 
 add_executable(main ${SOURCES})
