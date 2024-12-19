@@ -1,11 +1,9 @@
 {
   "max_recursion_depth": 5,
-  "camera": {
-    "pos": [0, 7, -30]
-  },
+  "field_of_view": 70,
   "screen": {
-    "pos": [-8, 9, -7],
-    "N": [0, 0, 1],
+    "pos": [-8, 18, -7],
+    "N": [0, -1, 1],
     "ratio": [16, 9],
     "size": [2560, 1440],
     "aa": true

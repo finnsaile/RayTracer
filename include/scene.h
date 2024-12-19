@@ -26,7 +26,7 @@ class Scene {
   std::vector<LightSource> light_sources_;
   std::unique_ptr<Eigen::Vector3d> camera_;
   std::unique_ptr<Screen> screen_;
-
+  std::unique_ptr<double> fov_;
   /**
    * @brief Calculates the color of a Pixel,
    * given its position and the position of the Eigen::Vector3d
@@ -37,6 +37,7 @@ class Scene {
    */
   Eigen::Vector3d CalculateColor(Eigen::Vector3d pixel_position,
                                  Eigen::Vector3d cam_position);
+  void CalculateCameraPosition();
 
  public:
   Scene();

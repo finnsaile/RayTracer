@@ -1,6 +1,7 @@
 #include "scene.h"
 
 #include <Eigen/Dense>
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -94,9 +95,12 @@ void Scene::ReadEntities(string filename) {
 
   this->max_recursion_depth_ = data.at("max_recursion_depth").get<size_t>();
 
-  auto camera_json = data.at("camera");
-  this->camera_ =
-      unique_ptr<Camera>(new Camera(camera_json.at("pos").get<Camera>()));
+  this->fov_ =
+      unique_ptr<double>(new double(data.at("field_of_view").get<double>()));
+
+  // auto camera_json = data.at("camera");
+  // this->camera_ =
+  //     unique_ptr<Camera>(new Camera(camera_json.at("pos").get<Camera>()));
 
   auto screen_json = data.at("screen");
   this->screen_ = unique_ptr<Screen>(new Screen(screen_json.get<Screen>()));
@@ -131,4 +135,22 @@ void Scene::ReadEntities(string filename) {
   for (auto& box : boxes) {
     this->objects_.push_back(std::move(std::make_unique<Box>(box)));
   }
+
+  CalculateCameraPosition();
+}
+
+void Scene::CalculateCameraPosition() {
+  assert(fov_ != nullptr);
+
+  const Vector3d v1 = screen_->screen_vectors_.first.normalized();
+  const Vector3d v2 = screen_->screen_vectors_.second.normalized();
+
+  const double r1 = screen_->screen_ratio_.x();
+  const double r2 = screen_->screen_ratio_.y();
+
+  Vector3d screen_center = screen_->position_ + v1 * (r1 / 2.) - v2 * (r2 / 2.);
+  const double fov_rad = *fov_ * (M_PI / 180);
+  const double dist = (r1 / 2.) / tan(fov_rad / 2.);
+  camera_ = unique_ptr<Vector3d>(
+      new Vector3d(screen_center - screen_->normal_vec_ * dist));
 }
