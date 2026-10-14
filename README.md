@@ -1,8 +1,5 @@
 # Ray Tracer
 
-_This version of the ray tracer is not yet complete and is still a work in progress_
----
-
 <br/>
 
 <p float="left">
